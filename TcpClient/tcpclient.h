@@ -24,6 +24,7 @@ public:
     QString getStrName();
     void setStrName(const QString &strName);
     QString getStrRootPath() const;
+    void setStrRootPath(const QString &strRootPath);
     QString getStrCurPath() const;
     void setStrCurPath(const QString &strCurPath);
 public slots:
@@ -39,8 +40,8 @@ private:
     Ui::TcpClient *ui;
     QString m_strIP;
     qint64 m_usPort;
-
     QTcpSocket m_tcpSocket;
+
     QString m_strName;
     QString m_strRootPath;
     QString m_strCurPath;

@@ -15,7 +15,9 @@ TcpClient::TcpClient(QWidget *parent)
 
 
     connect(&m_tcpSocket,SIGNAL(connected()),this,SLOT(showConnect()));
+
     m_tcpSocket.connectToHost(QHostAddress(m_strIP),m_usPort);
+
     connect(&m_tcpSocket, SIGNAL(readyRead()),
             this, SLOT(receiveMsg())); // 信号处理方，用以处理的槽函数
 }
@@ -73,6 +75,11 @@ QString TcpClient::getStrRootPath() const
     return m_strRootPath;
 }
 
+void TcpClient::setStrRootPath(const QString &strRootPath)
+{
+    m_strRootPath = strRootPath;
+}
+
 QString TcpClient::getStrCurPath() const
 {
      return m_strCurPath;
@@ -125,7 +132,7 @@ void TcpClient::receiveMsg()
     uint uiMsgLen = uiPDULen - sizeof(PDU); // 实际消息大小，sizeof(PDU)只会计算结构体大小，而不是分配的大小
     PDU *pdu = mkPDU(uiMsgLen);
     m_tcpSocket.read((char*)pdu + sizeof(uint), uiPDULen - sizeof(uint)); // 接收剩余部分数据（第一个uint已读取）
-    // qDebug() << pdu -> uiMsgType << ' ' << (char*)pdu -> caMsg; // 输出
+    qDebug() << pdu -> uiMsgType << ' ' << (char*)pdu -> caMsg; // 输出
 
     // 根据不同消息类型，执行不同操作
     switch(pdu -> uiMsgType)
@@ -146,7 +153,7 @@ void TcpClient::receiveMsg()
     {
         if(0 == strcmp(pdu -> caData, LOGIN_OK))
         {
-            // QMessageBox::information(this, "登录", LOGIN_OK);
+            QMessageBox::information(this, "登录", LOGIN_OK);
             char caName[32] = {'\0'};
             strncpy(caName, pdu -> caData + 32, 32); // 设置已登录用户名
             // 设置用户根目录和当前目录
@@ -433,8 +440,8 @@ void TcpClient::receiveMsg()
 
 void TcpClient::on_regist_pb_clicked()
 {
-    QString strName = ui -> username_le -> text(); // 获取用户名和密码
-    QString strPwd = ui ->psw_le->text();
+    QString strName = ui -> username_le -> text().toUtf8(); // 获取用户名和密码
+    QString strPwd = ui ->psw_le->text().toUtf8();
     // 合理性判断
     if(!strName.isEmpty() && !strPwd.isEmpty())
     {

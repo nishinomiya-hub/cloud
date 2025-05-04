@@ -22,7 +22,7 @@ void onlineuserwid::setOnlineUsers(PDU *pdu)
     for(uint i = 0; i < uiSize; ++ i)
     {
         memcpy(caTmp, (char*)(pdu -> caMsg) + 32 * i, 32);
-        // qDebug() << "在线用户：" << caTmp;
+        qDebug() << "在线用户：" << caTmp;
         // 补充：不显示自己信息，防止之后添加自己为好友等操作错误
         if(strcmp(caTmp, TcpClient::getInstance().getStrName().toStdString().c_str()) == 0)
         {

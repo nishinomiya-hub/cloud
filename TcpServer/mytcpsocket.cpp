@@ -71,6 +71,11 @@ PDU* MyTcpSocket::handleLoginRequest(PDU* pdu,QString& m_strName)
             {
                 qDebug() << "警告：用户文件夹创建失败，路径可能存在问题或权限不足";
                 // 此处可根据需要处理创建失败的情况，例如返回错误信息
+                // 返回登录失败 PDU
+                resPdu = mkPDU(0);
+                resPdu->uiMsgType = ENUM_MSG_TYPE_LOGIN_RESPOND;
+                strcpy(resPdu->caData, LOGIN_FAILED);  // 修改为登录失败的响应
+                return resPdu;
             }
         }
 

@@ -3,6 +3,7 @@
 OperateWidget::OperateWidget(QWidget *parent)
     : QWidget{parent}
 {
+    m_pUserLabel = new QLabel;
     m_pListWidget = new QListWidget(this); // 参数指示QWidget *parent
     m_pListWidget -> addItem("好友");
     m_pListWidget -> addItem("文件");
@@ -16,7 +17,7 @@ OperateWidget::OperateWidget(QWidget *parent)
     QHBoxLayout *pMainHBL = new QHBoxLayout;
     pMainHBL -> addWidget(m_pListWidget);
     pMainHBL -> addWidget(m_pSW);
-
+    pMainHBL -> addWidget(m_pUserLabel);
     setLayout(pMainHBL);
 
     // 将m_pListWidget的行号变化信号与m_pSW的设置当前页面槽函数关联
